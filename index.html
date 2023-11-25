@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="app.js"></script>
+    <title>Annuity Calculator - Ordinary and Annuity Due</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border-radius: 4px;
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Annuity Calculator - Ordinary and Annuity Due</h1>
+        <form id="annuityForm">
+            <label for="presentValue">Present Value:</label>
+            <input type="text" id="presentValue" placeholder="Enter the present value" required>
+            
+            <label for="futureValue">Future Value:</label>
+            <input type="text" id="futureValue" placeholder="Enter the future value" required>
+            
+            <label for="interestRate">Interest Rate:</label>
+            <input type="text" id="interestRate" placeholder="Enter the interest rate" required>
+            
+            <label for="periods">Number of Periods:</label>
+            <input type="text" id="periods" placeholder="Enter the number of periods" required>
+            
+            <label for="annuityType">Annuity Type:</label>
+            <select id="annuityType">
+                <option value="ordinary">Ordinary</option>
+                <option value="due">Due</option>
+            </select>
+            
+            <button type="submit">Calculate</button>
+        </form>
+        
+        <div class="result">
+            <p id="result"></p>
+        </div>
+    </div>
+    <!-- Aquí comienza la tabla de amortización y capitalización -->
+    <div class="table-container" id="tableContainer" style="display: none;">
+        <table id="amortizationTable">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Beginning Balance</th>
+                    <th>Payment</th>
+                    <th>Interest</th>
+                    <th>Principal</th>
+                    <th>Ending Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas de la tabla se llenarán con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+
+    <footer>
+        <p>Universidad Distrital Francisco Jose de Caldas</p>
+        <p>Jerson, Jhon y Sergio</p>
+    </footer>
+</body>
+</html>
