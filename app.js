@@ -16,51 +16,43 @@ function handleFormSubmit(event) {
         return;
     }
     
-    const interestRate = parseFloat(interestRateInput);
+    const interestRate = parseFloat(interestRateInput) / 100;
     const periods = parseInt(periodsInput);
-
     let presentValue = parseFloat(presentValueInput) || 0;
     let futureValue = parseFloat(futureValueInput) || 0;
     
-    let paymentAmount;
-
-    if(presentValue === 0 && futureValue !== 0) {
-        // Calcular el valor presente a partir del valor futuro
+    let paymentAmount, totalInterest;
+    if (presentValue === 0 && futureValue !== 0) {
         presentValue = calculatePresentValue(futureValue, interestRate, periods);
         paymentAmount = calculatePaymentAmount(presentValue, interestRate, periods, annuityType);
-    } else if(presentValue !== 0 && futureValue === 0) {
-        // Calcular el valor futuro a partir del valor presente
+        totalInterest = futureValue - presentValue;
+        generateFutureValueAmortizationTable(paymentAmount, interestRate, periods, futureValue);
+    } else if (presentValue !== 0 && futureValue === 0) {
         paymentAmount = calculatePaymentAmount(presentValue, interestRate, periods, annuityType);
         futureValue = calculateFutureValue(paymentAmount, interestRate, periods, annuityType);
+        totalInterest = futureValue - presentValue;
+        generateAmortizationTable(paymentAmount, interestRate, periods, presentValue);
     } else {
         displayError('Please enter either a present value or a future value, not both.');
         return;
     }
 
-    const totalInterest = calculateTotalInterest(paymentAmount, periods, presentValue);
-
     displayResult(paymentAmount, presentValue, futureValue, totalInterest, interestRate, periods, annuityType);
-    generateAmortizationTable(paymentAmount, interestRate, periods, presentValue);
 }
 
 function calculatePresentValue(futureValue, interestRate, periods) {
-    const interestRateDecimal = interestRate / 100;
-    return futureValue / Math.pow(1 + interestRateDecimal, periods);
+    return futureValue / Math.pow(1 + interestRate, periods);
 }
 
 function calculatePaymentAmount(presentValue, interestRate, periods, annuityType) {
-    const interestRateDecimal = interestRate / 100;
-    const annuityFactor = (1 - Math.pow(1 + interestRateDecimal, -periods)) / interestRateDecimal;
+    const annuityFactor = (1 - Math.pow(1 + interestRate, -periods)) / interestRate;
     const paymentAmount = presentValue / annuityFactor;
-
-    return annuityType === 'ordinary' ? paymentAmount : paymentAmount * (1 + interestRateDecimal);
+    return annuityType === 'ordinary' ? paymentAmount : paymentAmount * (1 + interestRate);
 }
 
 function calculateFutureValue(paymentAmount, interestRate, periods, annuityType) {
-    const interestRateDecimal = interestRate / 100;
-    const futureValue = paymentAmount * ((Math.pow(1 + interestRateDecimal, periods) - 1) / interestRateDecimal);
-
-    return annuityType === 'ordinary' ? futureValue : futureValue * (1 + interestRateDecimal);
+    const futureValue = paymentAmount * ((Math.pow(1 + interestRate, periods) - 1) / interestRate);
+    return annuityType === 'ordinary' ? futureValue : futureValue / (1 + interestRate);
 }
 
 function validateInput(value, fieldName) {
@@ -69,12 +61,6 @@ function validateInput(value, fieldName) {
         return false;
     }
     return true;
-}
-
-function calculateTotalInterest(paymentAmount, periods, presentValue) {
-    const totalPaymentAmount = paymentAmount * periods;
-    const totalInterest = totalPaymentAmount - presentValue;
-    return totalInterest.toFixed(2);
 }
 
 function displayError(errorMessage) {
@@ -93,11 +79,13 @@ function displayResult(paymentAmount, presentValue, futureValue, totalInterest, 
 function generateAmortizationTable(paymentAmount, interestRate, periods, presentValue) {
     let balance = presentValue;
     let tableBody = '';
+    let cumulativeInterest = 0;
 
     document.getElementById('amortizationTable').getElementsByTagName('tbody')[0].innerHTML = '';
 
     for (let period = 1; period <= periods; period++) {
-        let interest = balance * (interestRate / 100);
+        let interest = balance * interestRate;
+        cumulativeInterest += interest;
         let principal = paymentAmount - interest;
         balance -= principal;
 
@@ -117,6 +105,42 @@ function generateAmortizationTable(paymentAmount, interestRate, periods, present
     document.getElementById('tableContainer').style.display = 'block';
 }
 
+function generateFutureValueAmortizationTable(paymentAmount, interestRate, periods, futureValue) {
+    let balance = 0;
+    let tableBody = '';
+    let cumulativeInterest = 0;
+
+    document.getElementById('amortizationTable').getElementsByTagName('tbody')[0].innerHTML = '';
+
+    for (let period = 1; period <= periods; period++) {
+        let interest = balance * interestRate;
+        cumulativeInterest += interest;
+
+        // Cambio aquí: incremento es igual a la suma de la cuota y el interés
+        let increment = paymentAmount + interest;
+
+        // Actualizar el balance sumando el incremento, no solo el pago
+        balance += increment;
+
+        tableBody += `
+            <tr>
+                <td>${period}</td>
+                <td>${formatCurrency(balance)}</td>
+                <td>${formatCurrency(paymentAmount)}</td>
+                <td>${formatCurrency(interest)}</td>
+                <td>${formatCurrency(increment)}</td>
+                <td>${formatCurrency(cumulativeInterest)}</td>
+            </tr>
+        `;
+
+        if (balance >= futureValue) break;
+    }
+
+    document.getElementById('amortizationTable').getElementsByTagName('tbody')[0].innerHTML = tableBody;
+    document.getElementById('tableContainer').style.display = 'block';
+}
+
+
 function formatCurrency(value) {
-    return '$' + Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return '$' + Number(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
