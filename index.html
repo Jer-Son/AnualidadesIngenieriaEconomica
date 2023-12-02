@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="app.js"></script>
-    <title>Annuity Calculator - Ordinary and Annuity Due</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title> Proyecto Final</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,9 +14,112 @@
             margin: 0;
             padding: 0;
         }
+
+        .footer {
+  background-color: #333;
+  color: #fff;
+  padding-top: 40px;
+  position: relative;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  margin: 20px 0;
+}
+
+.footer-section h3 {
+  margin-bottom: 20px;
+}
+
+.footer-section p,
+.footer-section ul,
+.footer-section li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  text-decoration: underline;
+}
+
+.socials {
+  display: flex;
+}
+
+.socials li {
+  margin-right: 10px;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 20px 20px;
+  border-top: 1px solid #444;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-section {
+    margin: 10px;
+    text-align: center;
+  }
+
+  .socials {
+    justify-content: center;
+  }
+}
         
+        .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #24292e;
+  }
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  .main-content {
+    text-align: center;
+    padding: 100px;
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(235,235,245,1) 100%);
+  }
+  .main-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+  }
+  .main-content p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+
+
+
         .container {
-            max-width: 600px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
@@ -103,48 +207,286 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        .btn-success {
+  background-color: #28a745; /* This is a green color, typical for a 'success' button */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #218838; /* A slightly darker green for the hover state */
+  transform: translateY(-2px); /* Gives a subtle 'lift' effect when hovered */
+}
+
+.btn-success:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5); /* A glow effect that matches the button color */
+}
+
+/* If you want the button to match the footer's color exactly */
+.btn-footer {
+  background-color: #333; /* Match the footer background color */
+  color: #fff; /* Match the footer text color */
+  border: 1px solid #fff; /* Add a white border to make the button stand out */
+  /* ... other styles ... */
+}
+
+.btn-footer:hover {
+  background-color: #444; /* A slightly lighter grey for the hover state */
+  /* ... other styles ... */
+}
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Annuity Calculator - Ordinary and Annuity Due</h1>
+
+    <div class="navbar" >
+        <img src="https://www.transmigrarts.com/wp-content/uploads/2021/01/distrital1.png" alt="Logo" style="height: 150px;"> <!-- Placeholder for the actual logo -->
+        <div class="navigation">
+            <a onclick="finctiontable()" href="#">Amortización y Capitalización</a>
+            <a onclick="finctionconvertion()" href="#">Conversion de tasas</a>
+          </div>
+      </div>
+      <div class="main-content">
+        <h1>Calculadora de anualidades: ordinarias y anualidades vencidas </h1>
+        <p> Este proyecto tiene como finalidad tener una calculadora que sirva para calcular anualidades ordinarias y/o vencidas y generar una tabl
+            para ayudar a comprender al usuario en cada periodo su interes de pago y amortización
+        </p>
+      </div>
+<br>
+  <div id="containerconvertion" class="container" style="display: none;">
+    <div  class="column col-md-4" >
+      <div>
+          <label for="interestRate2">Tasa de Interés a convertir:</label>
+      </div>
+      <div>
+          <input class="form-control" style="max-width: 100%;" type="text" id="interestRate2" placeholder="Enter the interest rate" required>    
+      </div>
+    </div>
+    <div class="column col-md-12"  class="column">
+      <label for="interestRate">Conversion de Tasas:</label>
+        <div class="d-flex justify-content-center col-md-8" style="border: 1px;">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault_1" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              Vencida
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault_1" id="flexRadioDefault2" >
+            <label class="form-check-label" for="flexRadioDefault2">
+              Anticipada
+            </label>
+          </div>
+          <div style="margin: 10px;" class="justify-content-center align-items-center">
+            <h3 style="color: #218838; width: 20px;"> ➪ </h3>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault_2" id="flexRadioDefault3">
+            <label class="form-check-label" for="flexRadioDefault3">
+              Vencida
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault_2" id="flexRadioDefault4" >
+            <label class="form-check-label" for="flexRadioDefault4">
+              Anticipada
+            </label>
+          </div>
+          <div style="margin: 5px; width: 100px;">
+            <button onclick="borarckecks()">Borrar ckecks</button>
+          </div>
+        </div>
+      <div class="d-flex justify-content-between">
+          <select id="selectdateconvert1_2" class="form-select" aria-label="Default select example">
+              <option value="1">(EM) Efectivo Mensual</option>
+              <option value="2">(EB)</option>
+              <option value="3">(ET)</option>
+              <option value="4">(EC)</option>
+              <option value="5">(ES)</option>
+              <option value="6">(EA)</option>
+              <option value="7">(PM)</option>
+              <option value="8">(PB)</option>
+              <option value="9">(PR)</option>
+              <option value="10">(PC)</option>
+              <option value="11">(PS)</option>
+              <option value="12">(PA)</option>
+              <option value="13">(MV)</option>
+              <option value="14">(BV)</option>
+              <option value="15">(TV)</option>
+              <option value="16">(CV)</option>
+              <option value="17">(SV)</option>
+              <option value="18">(NM)</option>
+              <option value="19">(NB)</option>
+              <option value="20">(NT)</option>
+              <option value="21">(NC)</option>
+              <option value="22">(NS)</option>
+              <option value="23">(CM)</option>
+              <option value="24">(CB)</option>
+              <option value="25">(CT)</option>
+              <option value="26">(CC)</option>
+              <option value="27">(CS)</option>
+          </select>
+          <div style="padding: 0; width: 20%;">
+              <h3>🔀 </h3>
+          </div>
+          <select id="selectdateconvert2_2" class="form-select" aria-label="Default select example">
+              <option value="1">(EM) Efectivo Mensual</option>
+              <option value="2">(EB)</option>
+              <option value="3">(ET)</option>
+              <option value="4">(EC)</option>
+              <option value="5">(ES)</option>
+              <option value="6">(EA)</option>
+              <option value="7">(PM)</option>
+              <option value="8">(PB)</option>
+              <option value="9">(PR)</option>
+              <option value="10">(PC)</option>
+              <option value="11">(PS)</option>
+              <option value="12">(PA)</option>
+              <option value="13">(MV)</option>
+              <option value="14">(BV)</option>
+              <option value="15">(TV)</option>
+              <option value="16">(CV)</option>
+              <option value="17">(SV)</option>
+              <option value="18">(NM)</option>
+              <option value="19">(NB)</option>
+              <option value="20">(NT)</option>
+              <option value="21">(NC)</option>
+              <option value="22">(NS)</option>
+              <option value="23">(CM)</option>
+              <option value="24">(CB)</option>
+              <option value="25">(CT)</option>
+              <option value="26">(CC)</option>
+              <option value="27">(CS)</option>
+          </select>
+          <button onclick="convertirTasas_2()" type="button" class="btn btn-success">Convertir</button>
+      </div>
+  </div>
+  </div>
+    <div id="containertable" class="container" style="display: none;">
+        <h1></h1>
         <form id="annuityForm">
-            <label for="presentValue">Present Value:</label>
-            <input type="text" id="presentValue" placeholder="Enter the present value" required>
+            <label for="presentValue">Valor Presente :</label>
+            <input class="form-control" oninput="validvaluepresent()" type="number" value="0" id="presentValue" placeholder="Enter the present value" required>
             
-            <label for="futureValue">Future Value:</label>
-            <input type="text" id="futureValue" placeholder="Enter the future value" required>
+            <label for="futureValue">Valor Futuro :</label>
+            <input class="form-control" type="number" oninput="validvaluefuture()" id="futureValue" placeholder="Enter the future value" value="0" required>
+            <div class="row" style="padding: 0;">
+            <div  class="column col-md-4" >
+                <div>
+                    <label for="interestRate">Tasa de Interés:</label>
+                </div>
+                <div>
+                    <input class="form-control" style="max-width: 100%;" type="text" id="interestRate" placeholder="Enter the interest rate" required>    
+                </div>
+            </div>
+            <div class="column col-md-8"  class="column" style="padding: 0;">
+                <div>
+                    <label for="interestRate">Conversion de Tasas:</label>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <select id="selectdateconvert1" class="form-select" aria-label="Default select example">
+                        <option value="1">(EM) Efectivo Mensual</option>
+                        <option value="2">(EB)</option>
+                        <option value="3">(ET)</option>
+                        <option value="4">(EC)</option>
+                        <option value="5">(ES)</option>
+                        <option value="6">(EA)</option>
+                        <option value="7">(PM)</option>
+                        <option value="8">(PB)</option>
+                        <option value="9">(PR)</option>
+                        <option value="10">(PC)</option>
+                        <option value="11">(PS)</option>
+                        <option value="12">(PA)</option>
+                        <option value="13">(MV)</option>
+                        <option value="14">(BV)</option>
+                        <option value="15">(TV)</option>
+                        <option value="16">(CV)</option>
+                        <option value="17">(SV)</option>
+                        <option value="18">(NM)</option>
+                        <option value="19">(NB)</option>
+                        <option value="20">(NT)</option>
+                        <option value="21">(NC)</option>
+                        <option value="22">(NS)</option>
+                        <option value="23">(CM)</option>
+                        <option value="24">(CB)</option>
+                        <option value="25">(CT)</option>
+                        <option value="26">(CC)</option>
+                        <option value="27">(CS)</option>
+                    </select>
+                    <div style="padding: 0; width: 20%;">
+                        <h3>🔀 </h3>
+                    </div>
+                    <select id="selectdateconvert2" class="form-select" aria-label="Default select example">
+                        <option value="1">(EM) Efectivo Mensual</option>
+                        <option value="2">(EB)</option>
+                        <option value="3">(ET)</option>
+                        <option value="4">(EC)</option>
+                        <option value="5">(ES)</option>
+                        <option value="6">(EA)</option>
+                        <option value="7">(PM)</option>
+                        <option value="8">(PB)</option>
+                        <option value="9">(PR)</option>
+                        <option value="10">(PC)</option>
+                        <option value="11">(PS)</option>
+                        <option value="12">(PA)</option>
+                        <option value="13">(MV)</option>
+                        <option value="14">(BV)</option>
+                        <option value="15">(TV)</option>
+                        <option value="16">(CV)</option>
+                        <option value="17">(SV)</option>
+                        <option value="18">(NM)</option>
+                        <option value="19">(NB)</option>
+                        <option value="20">(NT)</option>
+                        <option value="21">(NC)</option>
+                        <option value="22">(NS)</option>
+                        <option value="23">(CM)</option>
+                        <option value="24">(CB)</option>
+                        <option value="25">(CT)</option>
+                        <option value="26">(CC)</option>
+                        <option value="27">(CS)</option>
+                    </select>
+                    <button onclick="convertirTasas()" type="button" class="btn btn-footer">Convertir</button>
+                </div>
+            </div>
+            </div>
+            <label for="periods">Numero de Periodos:</label>
+            <input class="form-control" type="number" id="periods" placeholder="Enter the number of periods" required>
             
-            <label for="interestRate">Interest Rate:</label>
-            <input type="text" id="interestRate" placeholder="Enter the interest rate" required>
-            
-            <label for="periods">Number of Periods:</label>
-            <input type="text" id="periods" placeholder="Enter the number of periods" required>
-            
-            <label for="annuityType">Annuity Type:</label>
+            <label for="annuityType">Tipo de Anualidad :</label>
             <select id="annuityType">
-                <option value="ordinary">Ordinary</option>
-                <option value="due">Due</option>
+                <option value="ordinary">Ordinaria</option>
+                <option value="due">Vencida</option>
             </select>
             
-            <button type="submit">Calculate</button>
+            <button type="submit">Calcular</button>
         </form>
         
         <div class="result">
             <p id="result"></p>
         </div>
     </div>
+
+<!--
+
+-->
+
+
     <!-- Aquí comienza la tabla de amortización y capitalización -->
     <div class="table-container" id="tableContainer" style="display: none;">
         <table id="amortizationTable">
-            <thead>
+            <thead id="titletable">
                 <tr>
-                    <th>Period</th>
-                    <th>Beginning Balance</th>
-                    <th>Payment</th>
-                    <th>Interest</th>
-                    <th>Principal</th>
-                    <th>Ending Balance</th>
+                  <th>Periodo</th>
+                  <th>Saldo</th>
+                  <th>Interes</th>
+                  <th>Cuota</th>
+                  <th>amortización</th>
+                  
                 </tr>
             </thead>
             <tbody>
@@ -154,9 +496,28 @@
     </div>
 
 
+    <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Integrantes Del Proyecto</h3>
+          </div>
+          <div class="footer-section">
+            <p> John Sebastian Guerrero Pinto - 20231678022</p>
+            <p> Sergio Andres Castro Pastran - 20232678034</p>
+            <p> Jerson Eliud Henao Sanchez - 20232678029</p>
+          </div>
+
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; Universidad Distrital Francisco Jose De Caldas</p>
+        </div>
+      </footer>
+
     <footer>
-        <p>Universidad Distrital Francisco Jose de Caldas</p>
-        <p>Jerson, Jhon y Sergio</p>
+        <p> Trabajo Final Ingenieria Economica grupo 301</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 </html>
